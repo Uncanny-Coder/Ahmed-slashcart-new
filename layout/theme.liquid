@@ -15,7 +15,9 @@
 
   </head>
   <body>
-    {% section 'header' %}
+    {% unless template.name == '404' %}
+      {% section 'header' %}
+    {% endunless %}
     <main role="main">
       {{ content_for_layout }}
     </main>
