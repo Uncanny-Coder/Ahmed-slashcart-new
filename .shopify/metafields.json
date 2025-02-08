@@ -9,7 +9,58 @@
   "market": [],
   "order": [],
   "page": [],
-  "product": [],
+  "product": [
+    {
+      "key": "color-pattern",
+      "namespace": "shopify",
+      "name": "Color",
+      "description": "Defines the primary color or pattern, such as blue or striped",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "camera-lens-type",
+      "namespace": "shopify",
+      "name": "Camera lens type",
+      "description": "Identifies the type of camera lens, such as macro or telephoto",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "suitable-for-camera-type",
+      "namespace": "shopify",
+      "name": "Suitable for camera type",
+      "description": "Identifies the camera models the product is compatible with, such as SLR or camcorder",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "focus-adjustment",
+      "namespace": "shopify",
+      "name": "Focus adjustment",
+      "description": "Specifies how a camera adjusts its focus, e.g. auto, manual",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "size",
+      "namespace": "shopify",
+      "name": "Size",
+      "description": "Used to specify the size of a product, such as 0-3 months or Extra large (XL)",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    }
+  ],
   "variant": [],
   "shop": []
 }

@@ -1,20 +1,26 @@
-<article class="py-10">
+<article
+  class="py-10"
+  itemscope
+  itemtype="http://schema.org/BlogPosting">
   {% for block in section.blocks %}
     {% case block.type %}
       {% when 'article_title' %}
         <div class="flex items-center justify-center">
           <div class="max-w-7xl text-center">
             <a href="{{ blog.url }}" class="text-base uppercase text-grey-500 bold hover:text-grey-700">{{ blog.title }}</a>
-            <h1 class="text-4xl md:text-6xl font-medium">
+            <h1 class="text-4xl md:text-6xl font-medium" itemprop="headline">
               {{ article.title }}
             </h1>
           </div>
         </div>
       {% when 'article_author' %}
-        <div class="flex items-center justify-center">
+        <div
+          class="flex items-center justify-center"
+          itemscope
+          itemtype="https://schema.org/Person">
           <div class="max-w-7xl text-center">
             {% if section.settings.enable_author %}
-              <small>{{ article.author }}</small>
+              <small itemprop="author">{{ article.author }}</small>
             {% endif %}
           </div>
         </div>
@@ -22,14 +28,14 @@
         <div class="flex items-center justify-center">
           <div class="max-w-7xl text-center">
             {% if section.settings.enable_published_date %}
-              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'on_date' }}</time>
+              <time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'on_date' }}</time>
             {% endif %}
           </div>
         </div>
       {% when 'featured_image' %}
-        <div class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden my-4">
+        <div itemprop="image" class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden my-4">
           {% if article.image != blank %}
-            <img class="w-full h-80 md:h-96 object-cover object-center" src="{{ article.image | img_url: 'large' }}">
+            <img class="w-full h-80 md:h-96 object-center object-cover" src="{{ article.image | img_url: 'large' }}">
           {% else %}
             {% assign placeholder_image = 'lifestyle-1' %}
             {{ placeholder_image | placeholder_svg_tag: 'w-full h-80 md:h-96 object-cover object-center p-5' }}
@@ -37,7 +43,7 @@
         </div>
       {% when 'article_content' %}
         <div class="flex items-center justify-center">
-          <div class="max-w-4xl p-10">{{ article.content }}</div>
+          <div itemprop="articleBody" class="max-w-4xl p-10">{{ article.content }}</div>
         </div>
     {% else %}
       {% endcase %}
@@ -58,9 +64,9 @@
                 <p class="text-sm">{{ comment.content }}</p>
               </div>
             {% endfor %}
-            {% if paginate.pages > 1 %}
-              {{ paginate | default_pagination }}
-            {% endif %}
+          <div class="max-w-6xl mx-auto">
+            {% render 'pagination', pagination: paginate  %}
+          </div>
           {% endpaginate %}
         </div>
       {% else %}
@@ -71,19 +77,37 @@
     <div class="mb-8" id="comment_form">
       {% form 'new_comment'
         , article %}
-        {% if form.errors %}
-          <ul class="text-red-500">
-            {% for field in form.errors %}
-              <li>{{ field }} - {{ form.errors.messages[field] }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-
-        {% if form.posted_successfully? %}
-          <p class="text-green-500">Thank you! Your comment has been submitted.</p>
-        {% endif %}
-
         <div class="max-w-4xl flex-1 justify-center items-center mx-auto">
+          {% if form.errors %}
+            <div
+              x-data="{ show: true }"
+              x-init="setTimeout(() => show = false, 5000)"
+              x-show="show"
+              class="border p-5">
+              <div class="flex flex-row items-center w-full my-3">
+                <div class="text-red-500 flex-row">
+                  {% render 'icon-failed' %}
+                  {% for field in form.errors %}
+                    <p>{{ field }} - {{ form.errors.messages[field] }}</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          {% if form.posted_successfully? %}
+            <div class="flex flex-row items-center w-full my-3 p-4">
+              <div
+                x-data="{ show: true }"
+                x-init="setTimeout(() => show = false, 5000)"
+                x-show="show"
+                class="text-green-500 transition-opacity duration-500 flex-row">
+                {% render 'icon-sucess' %}
+                <p>Thank you! Your comment has been submitted.</p>
+              </div>
+            </div>
+          {% endif %}
+
           <div class="px-1 md:flex mb-3">
             <div class="px-3 md:w-1/2">
               <label for="comment_author" class="text-grey-100 font-medium uppercase.text-xs mb-2">Name</label>
@@ -128,6 +152,32 @@
       {% endform %}
     </div>
   {% endif %}
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ article.title | json }},
+      "articleBody": "{{ article.content |  strip_html }}",
+      {% if article.excerpt !=blank %}
+        "description": {{ article.excerpt |  strip_html | json }},
+        {% endif %}
+        {% if article.image %}
+          "image" : [{{ article.image |  img_url: 'medium' |  prepend: 'http:'|  json }}],
+          {% endif %}
+          "datePubished": {{ article.published_at |  date:format:"default" | json }},
+          "dateCreated": {{ article.created_at |  date:format:"default" | json }},
+          "author": {
+            "@type": "Person",
+            "name": {{ article.author |  json }}
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": {{ shop.name |  json }}
+          }
+        }
+  </script>
 
 
   {% schema %}
