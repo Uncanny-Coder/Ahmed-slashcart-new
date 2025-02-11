@@ -8,7 +8,11 @@ module.exports = {
     './assets/**/*.js'
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '94': '22rem'
+      }
+    },
   },
   plugins: [],
 };
