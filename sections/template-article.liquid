@@ -64,9 +64,10 @@
                 <p class="text-sm">{{ comment.content }}</p>
               </div>
             {% endfor %}
-          <div class="max-w-6xl mx-auto">
-            {% render 'pagination', pagination: paginate  %}
-          </div>
+            <div class="max-w-6xl mx-auto">
+              {% render 'pagination'
+                , pagination: paginate %}
+            </div>
           {% endpaginate %}
         </div>
       {% else %}
