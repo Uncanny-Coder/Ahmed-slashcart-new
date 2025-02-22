@@ -67,9 +67,13 @@
           class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
           {% render 'icon-search' %}
         </button>
-        <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+        <a href="{{ routes.cart_url }}" class="relative whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
           {% render 'icon-shopping-bag' %}
+          <span id="cart-count" class="absolute -top-2 -right-2 border border-gray-500 text-gray-600 text-xs rounded-full px-1 py-0.2 {% if cart.item_count == 0 %}hidden{% endif %}">
+            {{ cart.item_count }}
+          </span>
         </a>
+
 
         {% if shop.customer_accounts_enabled %}
           {% if customer %}
