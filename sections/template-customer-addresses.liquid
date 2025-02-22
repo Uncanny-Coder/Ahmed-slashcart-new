@@ -310,18 +310,18 @@
         this.customerAddressesSelector();
         this.initDeleteAddressButtons();
         }
-        initDeleteAddressButtons() {
-            const deleteButtons = document.querySelectorAll("button[data-delete-address]");
-            if(deleteButtons.length < 1) return;
-            deleteButtons.forEach(button => {
-                button.addEventListener("click", function(e) {
-                    var url = this.dataset.url;
-                    var confirmation = window.confirm("Do you really wish to delete this address?");
-                    if(confirmation) {
-                        document.querySelector(`form[action="${url}"]`).submit();
-                    }
-                });
-            });
+    initDeleteAddressButtons() {
+      const deleteButtons = document.querySelectorAll("button[data-delete-address]");
+      if(deleteButtons.length < 1) return;
+      deleteButtons.forEach(button => {
+          button.addEventListener("click", function(e) {
+              var url = this.dataset.url;
+              var confirmation = window.confirm("Do you really wish to delete this address?");
+              if(confirmation) {
+                  document.querySelector(`form[action="${url}"]`).submit();
+              }
+          });
+      });
     }
     initCustomerAddress() {
         const allAddressesSelector = document.querySelectorAll("select[data-country-selector]");
